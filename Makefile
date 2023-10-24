@@ -13,7 +13,7 @@ define NL
 
 endef
 
-data: eqtlgen fasta-hg19 fasta-hg38 chain
+data: eqtlgen fasta-hg19 chain
 
 singularity:
 	singularity pull general.sif docker://porchard/general:20220406125608
@@ -33,12 +33,11 @@ fasta-hg19:
 
 fasta-hg38:
 	mkdir -p $(DATA)/fasta/hg38
-	wget https://console.cloud.google.com/storage/browser/_details/gtex-resources/references/Homo_sapiens_assembly38_noALT_noHLA_noDecoy_ERCC.fasta --directory-prefix $(DATA)/fasta/hg38/
-	wget https://console.cloud.google.com/storage/browser/_details/gtex-resources/references/Homo_sapiens_assembly38_noALT_noHLA_noDecoy_ERCC.dict --directory-prefix $(DATA)/fasta/hg38/
+	cp /net/topmed10/working/porchard/rnaseq/data/fasta/Homo_sapiens_assembly38_noALT_noHLA_noDecoy_ERCC.fasta $(DATA)/fasta/hg38/
 
 chain:
 	mkdir -p $(DATA)/$@
-	wget http://hgdownload.cse.ucsc.edu/goldenpath/hg38/liftOver/hg38ToHg19.over.chain.gz --directory-prefix $(DATA)/$@/
+	wget http://hgdownload.cse.ucsc.edu/goldenpath/hg19/liftOver/hg19ToHg38.over.chain.gz --directory-prefix $(DATA)/$@/
 
 top-hit-per-gene:
 	mkdir -p $(ANALYSIS)
@@ -46,4 +45,4 @@ top-hit-per-gene:
 
 lift-and-tabix:
 	mkdir -p $(ANALYSIS)
-	cd $(ANALYSIS) && nohup nextflow run -resume --eqtlgen $(DATA)/eqtlgen/2019-12-11-cis-eQTLsFDR-ProbeLevel-CohortInfoRemoved-BonferroniAdded.txt.gz --hg19_fasta $(DATA)/fasta/hg19/hg19.fa --hg38_fasta $(DATA)/fasta/hg38/Homo_sapiens_assembly38_noALT_noHLA_noDecoy_ERCC.fasta --hg38_fasta_dict $(DATA)/fasta/hg38/Homo_sapiens_assembly38_noALT_noHLA_noDecoy_ERCC.dict --chain $(DATA)/chain/hg38ToHg19.over.chain.gz --results $(ANALYSIS)/results $(ROOT)/lift-and-tabix.nf &
+	cd $(ANALYSIS) && nohup nextflow run -resume --eqtlgen $(DATA)/eqtlgen/2019-12-11-cis-eQTLsFDR-ProbeLevel-CohortInfoRemoved-BonferroniAdded.txt.gz --hg19_fasta $(DATA)/fasta/hg19/hg19.fa --hg38_fasta $(DATA)/fasta/hg38/Homo_sapiens_assembly38_noALT_noHLA_noDecoy_ERCC.fasta --chain $(DATA)/chain/hg19ToHg38.over.chain.gz --results $(ANALYSIS)/results $(ROOT)/lift-and-tabix.nf &

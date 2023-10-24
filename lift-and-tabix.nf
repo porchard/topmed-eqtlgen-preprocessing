@@ -12,7 +12,6 @@ process sort_and_tabix {
     input:
     path(eqtlgen) 
     path(hg38_fasta)
-    path(hg38_fasta_dict)
     path(hg19_fasta)
     path(chain)
 
@@ -34,5 +33,5 @@ process sort_and_tabix {
 
 
 workflow {
-    sort_and_tabix(Channel.fromPath(params.eqtlgen), Channel.fromPath(params.hg38_fasta), Channel.fromPath(params.hg38_fasta_dict), Channel.fromPath(params.hg19_fasta), Channel.fromPath(params.chain))
+    sort_and_tabix(Channel.fromPath(params.eqtlgen), Channel.fromPath(params.hg38_fasta), Channel.fromPath(params.hg19_fasta), Channel.fromPath(params.chain))
 }

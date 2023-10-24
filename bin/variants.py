@@ -31,14 +31,22 @@ def _make_sequence_dict(picard_jar, fasta):
     if not os.path.exists(dict_name):
         cmd = ['java', '-Xmx4g', '-Xms4g', '-jar', picard_jar, 'CreateSequenceDictionary', f'R={fasta}', f'O={dict_name}']
         logging.info('Generating sequence dictionary (command: {})'.format(' '.join(cmd)))
-        sp = subprocess.run(cmd, capture_output=True, check=True)
+        try:
+            sp = subprocess.run(cmd, capture_output=True, check=True)
+        except subprocess.CalledProcessError as e:
+            logging.error('Error generating sequence dictionary: {}'.format(e.stderr))
+            raise e
     return True
 
 
 def _lift_vcf(picard_jar, fasta, chain, input_vcf, output_vcf, reject_vcf):
     cmd = ['java', '-Xmx5g', '-Xms5g', '-jar', picard_jar, 'LiftoverVcf', '--CHAIN', chain, '--INPUT', input_vcf, '--OUTPUT', output_vcf, '--REJECT', reject_vcf, '--WARN_ON_MISSING_CONTIG', 'true', '--REFERENCE_SEQUENCE', fasta, '--RECOVER_SWAPPED_REF_ALT', 'true', '--WRITE_ORIGINAL_ALLELES', 'true', '--WRITE_ORIGINAL_POSITION', 'true']
     logging.info('Lifting VCF (command: {})'.format(' '.join(cmd)))
-    sp = subprocess.run(cmd, capture_output=True, check=True)
+    try:
+        sp = subprocess.run(cmd, capture_output=True, check=True)
+    except subprocess.CalledProcessError as e:
+        logging.error('Error lifting VCF: {}'.format(e.stderr))
+        raise e
     return True
 
 
