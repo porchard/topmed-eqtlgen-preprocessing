@@ -49,3 +49,13 @@ top-hit-per-gene:
 lift-and-tabix:
 	mkdir -p $(ANALYSIS)
 	cd $(ANALYSIS) && nohup nextflow run -resume --eqtlgen $(DATA)/eqtlgen/2019-12-11-cis-eQTLsFDR-ProbeLevel-CohortInfoRemoved-BonferroniAdded.txt.gz --hg19_fasta $(DATA)/fasta/hg19/hg19.fa --hg38_fasta $(DATA)/fasta/hg38/Homo_sapiens_assembly38_noALT_noHLA_noDecoy_ERCC.fasta --chain $(DATA)/chain/hg19ToHg38.over.chain.gz --results $(ANALYSIS)/results $(ROOT)/lift-and-tabix.nf &
+
+lift-and-tabix-trans: ANALYSIS=$(WORK)/lift-and-tabix/trans
+lift-and-tabix-trans:
+	mkdir -p $(ANALYSIS)
+	cd $(ANALYSIS) && nohup nextflow run -resume --eqtlgen $(DATA)/eqtlgen/2018-09-04-trans-eQTLsFDR-CohortInfoRemoved-BonferroniAdded.fix-chroms.txt.gz --hg19_fasta $(DATA)/fasta/hg19/hg19.fa --hg38_fasta $(DATA)/fasta/hg38/Homo_sapiens_assembly38_noALT_noHLA_noDecoy_ERCC.fasta --chain $(DATA)/chain/hg19ToHg38.over.chain.gz --results $(ANALYSIS)/results $(ROOT)/lift-and-tabix.nf &
+
+lift-and-tabix-trans-significant: ANALYSIS=$(WORK)/lift-and-tabix/trans-significant
+lift-and-tabix-trans-significant:
+	mkdir -p $(ANALYSIS)
+	cd $(ANALYSIS) && nohup nextflow run -resume --eqtlgen $(DATA)/eqtlgen/2018-09-04-trans-eQTLsFDR0.05-CohortInfoRemoved-BonferroniAdded.txt.gz --hg19_fasta $(DATA)/fasta/hg19/hg19.fa --hg38_fasta $(DATA)/fasta/hg38/Homo_sapiens_assembly38_noALT_noHLA_noDecoy_ERCC.fasta --chain $(DATA)/chain/hg19ToHg38.over.chain.gz --results $(ANALYSIS)/results $(ROOT)/lift-and-tabix.nf &
