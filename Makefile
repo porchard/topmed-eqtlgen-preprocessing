@@ -59,3 +59,7 @@ lift-and-tabix-trans-significant: ANALYSIS=$(WORK)/lift-and-tabix/trans-signific
 lift-and-tabix-trans-significant:
 	mkdir -p $(ANALYSIS)
 	cd $(ANALYSIS) && nohup nextflow run -resume --eqtlgen $(DATA)/eqtlgen/2018-09-04-trans-eQTLsFDR0.05-CohortInfoRemoved-BonferroniAdded.txt.gz --hg19_fasta $(DATA)/fasta/hg19/hg19.fa --hg38_fasta $(DATA)/fasta/hg38/Homo_sapiens_assembly38_noALT_noHLA_noDecoy_ERCC.fasta --chain $(DATA)/chain/hg19ToHg38.over.chain.gz --results $(ANALYSIS)/results $(ROOT)/lift-and-tabix.nf &
+
+top-hit-per-gene-after-lifting:
+	mkdir -p $(ANALYSIS)
+	$(SIF) python $(BIN)/get-top-variant-per-gene-from-lifted.py $(WORK)/lift-and-tabix/results/tabixed/eqtlgen.txt.gz > $(ANALYSIS)/top-per-gene.txt
