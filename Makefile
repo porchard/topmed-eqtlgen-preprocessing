@@ -25,6 +25,9 @@ eqtlgen:
 	wget https://molgenis26.gcc.rug.nl/downloads/eqtlgen/cis-eqtl/README_cis --directory-prefix $(DATA)/$@/
 	wget https://molgenis26.gcc.rug.nl/downloads/eqtlgen/trans-eqtl/2018-09-04-trans-eQTLsFDR-CohortInfoRemoved-BonferroniAdded.txt.gz --directory-prefix $(DATA)/$@/
 	wget https://molgenis26.gcc.rug.nl/downloads/eqtlgen/trans-eqtl/2018-09-04-trans-eQTLsFDR0.05-CohortInfoRemoved-BonferroniAdded.txt.gz  --directory-prefix $(DATA)/$@/
+	# removing variants w/ chrom = -10 (???)
+	cd $(DATA)/$@/ && zcat 2018-09-04-trans-eQTLsFDR-CohortInfoRemoved-BonferroniAdded.txt.gz | awk '$$3!="-10"' | gzip -c > 2018-09-04-trans-eQTLsFDR-CohortInfoRemoved-BonferroniAdded.fix-chroms.txt.gz
+	cd $(DATA)/$@/ && zcat 2018-09-04-trans-eQTLsFDR-CohortInfoRemoved-BonferroniAdded.txt.gz | awk '$$3=="-10"' | gzip -c > 2018-09-04-trans-eQTLsFDR-CohortInfoRemoved-BonferroniAdded.DROPPED.txt.gz
 
 fasta-hg19:
 	mkdir -p $(DATA)/fasta/hg19
